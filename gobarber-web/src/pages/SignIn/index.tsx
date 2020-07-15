@@ -11,12 +11,22 @@ import Button from '../../components/Button';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
+import { useAuth } from '../../context/AuthContext';
+
 import { Container, Content, Background } from './styles';
+
+interface SignInFormData {
+  email: string,
+  password: string,
+}
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: unknown) => {
+  // const { signIn, user } = useContext(AuthContext);
+  const { signIn, user } = useAuth();
+
+  const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
       formRef.current?.setErrors({});
 
@@ -28,6 +38,14 @@ const SignIn: React.FC = () => {
       await schema.validate(data, {
         abortEarly: false,
       });
+
+      signIn({
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log(user);
+
     } catch (error) {
       const errors = getValidationErrors(error);
 
