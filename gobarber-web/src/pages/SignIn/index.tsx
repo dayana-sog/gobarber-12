@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { Link, useHistory } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -14,7 +15,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
-import { Container, Content, Background } from './styles';
+import { Container, Content, AnimationContainer, Background } from './styles';
 
 interface SignInFormData {
   email: string,
@@ -27,6 +28,7 @@ const SignIn: React.FC = () => {
   // const { signIn, user } = useContext(AuthContext);
   const { signIn, user } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
@@ -46,19 +48,20 @@ const SignIn: React.FC = () => {
         password: data.password,
       });
 
-      console.log(user);
-
+      history.push('/dashboard');
     } catch (error) {
       if(error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
         formRef.current?.setErrors(errors);
+        
+        return;
       }
 
       addToast({
         type: 'error',
         title: 'Erro na autenticação',
-        description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
+        description: 'Ocorreu um erro ao fazer cadastro, tente novamente',
       });
     }
   }, [signIn, addToast]);
@@ -66,6 +69,7 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <Content>
+        <AnimationContainer>
         <img src={logoImg} alt="GoBarber" />
 
         <Form ref={formRef} onSubmit={handleSubmit}>
@@ -76,10 +80,11 @@ const SignIn: React.FC = () => {
           <a href="forgot">Esqueci minha senha</a>
         </Form>
 
-        <a href="criar">
+        <Link to="/signup">
           <FiLogIn />
           Criar conta
-        </a>
+        </Link>
+        </AnimationContainer>
       </Content>
       <Background />
     </Container>

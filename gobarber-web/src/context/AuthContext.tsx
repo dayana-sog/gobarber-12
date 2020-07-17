@@ -1,8 +1,6 @@
 import React, { createContext, useCallback, useState, useContext} from 'react';
 import api from '../services/apiClient';
 
-import history from '../utils/history';
-
 interface AuthState {
   token: string,
   user: object,
@@ -50,7 +48,6 @@ const AuthProvider: React.FC = ({ children }) => {
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     setData({ token, user });
-    //history.push('/');
   }, []);
 
   const signOut = useCallback(async() => {
