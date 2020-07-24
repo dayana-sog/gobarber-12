@@ -22,6 +22,8 @@ import Input from '../../components/Input';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
+import { useAuth } from '../../context/auth';
+
 import { 
   Container, 
   Title, 
@@ -41,6 +43,8 @@ const SignIn: React.FC = () => {
   const passwordRef = useRef<TextInput>(null);
   const nativagtion = useNavigation();
 
+  const { signIn } = useAuth(); 
+
   const handleSignIn = useCallback(async (data: SignInFormData) => {
     try {
       formRef.current?.setErrors({});
@@ -54,12 +58,10 @@ const SignIn: React.FC = () => {
         abortEarly: false,
       });
 
-      // await signIn({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-
-      // history.push('/dashboard');
+      await signIn({
+        email: data.email,
+        password: data.password,
+      });
     } catch (error) {
       if(error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
@@ -74,7 +76,7 @@ const SignIn: React.FC = () => {
         'Ocorreu um erro ao fazer login, cheque as crendenciais',
       );
     }
-  }, []);
+  }, [signIn]);
 
   return (
     <>
