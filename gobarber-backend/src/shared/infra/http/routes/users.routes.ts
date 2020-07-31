@@ -3,7 +3,7 @@ import multer from 'multer';
 import uploadConfig from '../config/upload';
 
 import CreateUsersService from '../services/CreateUserService';
-import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
+import UpdateUserAvatarService from '../modules/users/services/UpdateUserAvatarService';
 
 import ensureAuthenticated from '../middleware/ensureAuthenticated';
 

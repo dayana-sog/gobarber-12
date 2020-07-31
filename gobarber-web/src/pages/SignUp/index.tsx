@@ -17,7 +17,9 @@ import Button from '../../components/Button';
 
 import { useToast } from '../../context/ToastContext';
 
-import { Container, Content, Background, AnimationContainer } from './styles';
+import {
+  Container, Content, Background, AnimationContainer,
+} from './styles';
 
 interface SignUpFormData {
   name: string;
@@ -54,11 +56,11 @@ const SignUp: React.FC = () => {
         description: 'Você já pode fazer logon no GoBarber!',
       });
     } catch (error) {
-      if(error instanceof Yup.ValidationError) {
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
         inputRef.current?.setErrors(errors);
-        
+
         return;
       }
 
@@ -68,7 +70,7 @@ const SignUp: React.FC = () => {
         description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
       });
     }
-  }, []);
+  }, [addToast, history]);
 
   return (
     <Container>

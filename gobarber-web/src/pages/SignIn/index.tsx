@@ -15,7 +15,9 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
-import { Container, Content, AnimationContainer, Background } from './styles';
+import {
+  Container, Content, AnimationContainer, Background,
+} from './styles';
 
 interface SignInFormData {
   email: string,
@@ -26,7 +28,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   // const { signIn, user } = useContext(AuthContext);
-  const { signIn, user } = useAuth();
+  const { signIn } = useAuth();
   const { addToast } = useToast();
   const history = useHistory();
 
@@ -50,11 +52,11 @@ const SignIn: React.FC = () => {
 
       history.push('/dashboard');
     } catch (error) {
-      if(error instanceof Yup.ValidationError) {
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
         formRef.current?.setErrors(errors);
-        
+
         return;
       }
 
@@ -64,26 +66,26 @@ const SignIn: React.FC = () => {
         description: 'Ocorreu um erro ao fazer cadastro, tente novamente',
       });
     }
-  }, [signIn, addToast]);
+  }, [signIn, addToast, history]);
 
   return (
     <Container>
       <Content>
         <AnimationContainer>
-        <img src={logoImg} alt="GoBarber" />
+          <img src={logoImg} alt="GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu Logon</h1>
-          <Input name="email" icon={FiMail} type="text" placeholder="E-mail" />
-          <Input name="password" icon={FiLock} type="password" placeholder="Senha" />
-          <Button type="submit">Entrar</Button>
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu Logon</h1>
+            <Input name="email" icon={FiMail} type="text" placeholder="E-mail" />
+            <Input name="password" icon={FiLock} type="password" placeholder="Senha" />
+            <Button type="submit">Entrar</Button>
+            <a href="forgot">Esqueci minha senha</a>
+          </Form>
 
-        <Link to="/signup">
-          <FiLogIn />
-          Criar conta
-        </Link>
+          <Link to="/signup">
+            <FiLogIn />
+            Criar conta
+          </Link>
         </AnimationContainer>
       </Content>
       <Background />
